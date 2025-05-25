@@ -7,7 +7,7 @@ Wants=network-online.target
 Type=simple
 User=root
 Group=root
-ExecStart=/usr/bin/python3 /home/frcuser/headless-ds/headless-ds.py
+ExecStart=/usr/bin/python3 /home/frcuser/Headless-DS/headless-ds.py
 Restart=on-failure
 
 [Install]

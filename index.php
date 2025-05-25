@@ -6,7 +6,7 @@ echo '<title>Headless DriverStation Web Interface</title>';
 echo '<link rel=icon href=CanMan_Left.png>';
 
 $svc_name = "headless-ds";
-exec("cd /home/frcuser/headless-ds/ && git describe --tags --abbrev=0", $ver);
+exec("cd /home/frcuser/Headless-DS/ && git describe --tags --abbrev=0", $ver);
 echo '<b><pre>Headless DriverStation Web Interface | Version ' . $ver[0] . ' | FRC Team ' . exec(team) . '</pre></b>';
 
 exec('df /dev/mmcblk0p1 -H', $output);
@@ -39,8 +39,8 @@ if(isset($_GET["restart"])) {
 } else if(isset($_GET["stop"])) {
 	exec('sudo systemctl stop ' . $svc_name . '.service', $void);
 } else if(isset($_GET["update"])) {
-	exec('cd /home/frcuser/headless-ds/ && git fetch --tags', $void);
-	exec('sh -c "cd /home/frcuser/headless-ds/ && git reset --hard HEAD && git pull && sudo systemctl daemon-reload"', $void);
+	exec('cd /home/frcuser/Headless-DS/ && git fetch --tags', $void);
+	exec('sh -c "cd /home/frcuser/Headless-DS/ && git reset --hard HEAD && git pull && sudo systemctl daemon-reload"', $void);
 } else {
 	exit();
 }

@@ -42,20 +42,20 @@ Enables Headless Driver Station on FRC robots with ethernet connection. Design o
 
   | Source `<src>` | Destination `<dest>` | Description |
   |----------------|----------------------|-------------|
-  |`/home/frcuser/headless-ds/headless-ds.service` | `/lib/systemd/system/headless-ds.service` | systemctl service config |
-  |`/home/frcuser/headless-ds/team.py` | `/usr/bin/team` | team number utility |
-  |`/home/frcuser/headless-ds/index.php` | `/var/www/html/index.php` | web config page |
-  |`/home/frcuser/headless-ds/CanMan_Left.png` | `/var/www/html/CanMan_Left.png` | FRC: 2158 the ausTIN CANs logo via web config |
-  |`/home/frcuser/headless-ds/dietpi-banner` | `/DietPi/dietpi/func/dietpi-banner` | ssh login banner |
+  |`/home/frcuser/Headless-DS/headless-ds.service` | `/lib/systemd/system/headless-ds.service` | systemctl service config |
+  |`/home/frcuser/Headless-DS/team.py` | `/usr/bin/team` | team number utility |
+  |`/home/frcuser/Headless-DS/index.php` | `/var/www/html/index.php` | web config page |
+  |`/home/frcuser/Headless-DS/CanMan_Left.png` | `/var/www/html/CanMan_Left.png` | FRC: 2158 the ausTIN CANs logo via web config |
+  |`/home/frcuser/Headless-DS/dietpi-banner` | `/DietPi/dietpi/func/dietpi-banner` | ssh login banner |
   |`/sbin/ifconfig` | `/usr/bin/ifconfig` | ifconfig through frcuser |
 31. Ensure that the Apache web server can access the symlinked files by changing the owner to `www-data`. Execute the following:
-  * `chown -R www-data /home/frcuser/headless-ds/`
-  * `chmod -R g+s /home/frcuser/headless-ds/`
+  * `chown -R www-data /home/frcuser/Headless-DS/`
+  * `chmod -R g+s /home/frcuser/Headless-DS/`
 32. Start the service by running `sudo systemctl start headless-ds.service`
 33. Have the service start on bootup/startup by running `sudo systemctl enable headless-ds.service`
 
 ### Install Script
-The included `install.sh` script will perform steps 22-33 if placed in the correct `/home/frcuser/headless-ds` folder. The Git repository should be present in its entirety before this time. Run as `sudo`.
+The included `install.sh` script will perform steps 22-33 if placed in the correct `/home/frcuser/Headless-DS` folder. The Git repository should be present in its entirety before this time. Run as `sudo`.
 
 ## Updates
 The "Update Device" button on the web dashboard will update the headless-ds with any new software published. The latest version will automatically be downloaded and applied. This requires an internet connection.
@@ -68,7 +68,7 @@ The "Update Device" button on the web dashboard will update the headless-ds with
 * Start/Stop/Restart/View logs (service): `sudo systemctl <start|stop|restart|status> headless-ds.service`
 * Check the packet output with a packet analyzer (tshark, a CLI of Wireshark)
   * Run `tshark -c 100 -Y "udp"`. Check for packets directed at the RoboRIO address (typically 10.21.58.2) or of length 6. If you see a bunch of TCP discovery requests, the device can't find the RoboRIO but has a "correct" network configuration. If you don't see anything relevant, either the network is set up incorrectly or the packets aren't being sent for some reason.
-* If the service doesn't run, try changing the "User" and "Group" in the service file to the same as the owner/user of the python script. If set up correctly, they should both be "root". If not, run `ls -la /home/frcuser/headless-ds.py`. The two names on the left should be the same as those in the service, editable by running `nano /lib/systemd/system/headless-ds.service`. Reload the systemctl configuration and restart the service to save the changes.
+* If the service doesn't run, try changing the "User" and "Group" in the service file to the same as the owner/user of the python script. If set up correctly, they should both be "root". If not, run `ls -la /home/frcuser/Headless-DS/headless-ds.py`. The two names on the left should be the same as those in the service, editable by running `nano /lib/systemd/system/headless-ds.service`. Reload the systemctl configuration and restart the service to save the changes.
 * If everything looks fine but no packets are being sent, `libnss-mdns` may not have been installed. To install it without having the pi connected to the internet, download it, scp it onto the pi, and use dpkg to install it. For other packages, the architecture is `armhf`, and Armbian is Debian-based, so any Debian packages built for armhf should work.
   * `wget http://http.us.debian.org/debian/pool/main/n/nss-mdns/libnss-mdns_0.10-8_armhf.deb`
   * `scp libnss-mdns_0.10-8_armhf.deb root@headless-ds.local:.`
