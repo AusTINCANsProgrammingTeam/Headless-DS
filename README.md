@@ -14,7 +14,7 @@ Enables Headless Driver Station on FRC robots with ethernet connection. Design o
 5. At first, download and install [balenaEtcher](https://www.balena.io/etcher/). This application flashes OS images to SD cards and USB drives, safely and easily on Windows, macOS, Linux.
 6. Start balenaEtcher and make sure you have your drive or SD card inserted into your computer. Locate and select the DietPi image. When Flashing is completed, Remove the drive resp. SD card from the PC and insert it into your NanoPi device, preparing to boot for the first time.
 7. Connect NanoPi to ethernet and put in SD card and connect power supply.
-8. SSH into NanoPi (default user = root, pw = dietpi) or use the serial monitor (USB)
+8. SSH into NanoPi (default user = root, pw = dietpi) or use the serial monitor (USB) `ssh root@<dhcp-ip-address>`
 9. Set up new user as "frcuser" with pw "admin"
 10. `sudo adduser frcuser`
 11. SSH into the NanoPi again (default user = root, pw = dietpi). To enable SSH Client on Windows 11, please read this [Microsoft article](https://learn.microsoft.com/en-us/windows/terminal/tutorials/ssh)
@@ -59,6 +59,56 @@ The included `install.sh` script will perform steps 22-33 if placed in the corre
 
 ## Updates
 The "Update Device" button on the web dashboard will update the headless-ds with any new software published. The latest version will automatically be downloaded and applied. This requires an internet connection.
+
+## Steps to configure static IP address on Debian 9.0
+The configuration file is located in /etc/network/interfaces file. We need to modify this file to change the IP address settings.
+
+`nano /etc/network/interfaces`
+
+The following lines are the default content of the file which is using DHCP. This file describes the network interfaces available on your system, and how to activate them. For more information, see interfaces(5).
+
+`source /etc/network/interfaces.d/*`
+
+```
+## The loopback network interface
+auto lo
+iface lo inet loopback
+
+## The primary network interface
+allow-hotplug ens18
+iface ens18 inet dhcp
+```
+
+To change it to Static IP, made some changes into these
+
+This file describes the network interfaces available on your system and how to activate them. For more information, see interfaces(5).
+
+`source /etc/network/interfaces.d/*`
+
+```
+## The loopback network interface
+auto lo
+iface lo inet loopback
+
+## The primary network interface
+allow-hotplug ens18'
+#iface ens18 inet dhcp'
+iface ens18 inet static
+address 10.21.58.30
+network 10.0.0.0
+netmask 255.0.0.0
+broadcast 10.21.0.255
+gateway 10.21.58.1
+dns-nameservers 10.21.58.1'
+```
+
+As you can see, my new IP address is 10.21.58.30. You can modify this to match your needs.
+
+Next, restart the networking
+
+`ifdown ens18 && ifup ens18`
+
+Where ens18 is the network interface.
 
 ## Troubleshooting
 * Use the web interface at `http://headless-ds.local`
