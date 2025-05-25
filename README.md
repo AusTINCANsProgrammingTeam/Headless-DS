@@ -1,18 +1,19 @@
 # Headless Driver Station
-Enables FRC robots on ethernet connection. 
+Enables Headless Driver Station on FRC robots with ethernet connection. 
+(as of May 25, Intructions status is "in progress")
 
 ##  Installation
 ### Instructions
-1. Download [Armbian Debian Stretch](https://dl.armbian.com/orangepizero/Debian_stretch_next.7z)
-2. Unzip `.img` file
+1. Download [DietPI Debian Stretch](https://dietpi.com/downloads/images/DietPi_NanoPiNEO-ARMv7-Bookworm.img.xz)
+2. It is xz-compressed so you will need to install either [7zip for Windows](https://www.7-zip.org/) or [The Unarchiver (Macintosh)](https://theunarchiver.com/). Both are free of charge and have been tested to decompress the image correctly.
 3. Plug in microSD card
-4. Figure out what device the SD card is by running `lsblk`. The device name is the one that will automatically mount to `/media/`. Note the *drive* device name, not the partition one (`/dev/mmcblk0` instead of `dev/mmcblk0p1`)
-5. (Optional) Only if the card has mounted: Unmount the SD card by using the eject in the file explorer or running `sudo umount <partitionName>`. Repeat for as many partitions as have been mounted.
-6. Mount `.img` to SD using `sudo dd bs=4M if=<filepathToArmbianImg> of=<deviceName> conv=fsync status=progress`
-7. Connect NanoPi to ethernet and put in SD card w/ power
-8. SSH into NanoPi (default user = root, pw = 1234) or use the serial monitor (USB)
+4. Flash the DietPi image
+5. At first, download and install [balenaEtcher](https://www.balena.io/etcher/). This application flashes OS images to SD cards and USB drives, safely and easily on Windows, macOS, Linux.
+6. Start balenaEtcher and make sure you have your drive or SD card inserted into your computer. Locate and select the DietPi image. When Flashing is completed, Remove the drive resp. SD card from the PC and insert it into your NanoPi device, preparing to boot for the first time.
+7. Connect NanoPi to ethernet and put in SD card and connect power supply.
+8. SSH into NanoPi (default user = root, pw = dietpi) or use the serial monitor (USB)
 9. Set up new user as "frcuser" with pw "admin"
-10. Install DietPi over the Armbian install using [these](https://github.com/MichaIng/DietPi/issues/1285#issue-280771944) instructions. Restart as necessary.
+10. `sudo adduser frcuser`
 11. SSH into the NanoPi again (default user = root, pw = dietpi)
 12. Set the new unix password to the default pw and continue installer until config screen comes up.
 13. Search for "pip" and "git client" packages and install those
