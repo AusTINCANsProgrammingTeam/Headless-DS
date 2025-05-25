@@ -38,7 +38,7 @@ Enables Headless Driver Station on FRC robots with ethernet connection. Design o
 27. Set the hostname to "headless-ds" by executing `sudo nano /etc/hostname` and changing the contents of the file to "headless-ds" (without the quotes).
 28. Run `apt-get update` and `apt-get upgrade`
 29. Ensure that the current directory is `/home/frcuser/` (if not change it to that using `cd /home/frcuser/`). Clone the headless-ds Git repository using `git clone https://github.com/AusTINCANsProgrammingTeam/Headless-DS.git`.
-30. Remove existing files and create symlinks in their place. Run `rm <dest>` then `sudo ln -s <src> <dest>` for each of the following pairs of `<src>` `<dest>`:
+30. Remove existing files and create symlinks in their place. Run `sudo rm <dest>` then `sudo ln -s <src> <dest>` for each of the following pairs of `<src>` `<dest>`:
 
   | Source `<src>` | Destination `<dest>` | Description |
   |----------------|----------------------|-------------|
@@ -49,8 +49,8 @@ Enables Headless Driver Station on FRC robots with ethernet connection. Design o
   |`/home/frcuser/Headless-DS/dietpi-banner` | `/DietPi/dietpi/func/dietpi-banner` | ssh login banner |
   |`/sbin/ifconfig` | `/usr/bin/ifconfig` | ifconfig through frcuser |
 31. Ensure that the Apache web server can access the symlinked files by changing the owner to `www-data`. Execute the following:
-  * `chown -R www-data /home/frcuser/Headless-DS/`
-  * `chmod -R g+s /home/frcuser/Headless-DS/`
+  * `sudo chown -R www-data /home/frcuser/Headless-DS/`
+  * `sudo chmod -R g+s /home/frcuser/Headless-DS/`
 32. Start the service by running `sudo systemctl start headless-ds.service`
 33. Have the service start on bootup/startup by running `sudo systemctl enable headless-ds.service`
 
@@ -66,7 +66,7 @@ The "Update Device" button on the web dashboard will update the headless-ds with
 * Restart the Pi: `sudo systemctl reboot -i`
 * Reload systemctl configuration: `sudo systemctl daemon-reload`
 * Start/Stop/Restart/View logs (service): `sudo systemctl <start|stop|restart|status> headless-ds.service`
-* Check the packet output with a packet analyzer (tshark, a CLI of Wireshark)
+* Check the packet output with a packet analyzer (tshark, a CLI of [Wireshark](https://www.wireshark.org/))
   * Run `tshark -c 100 -Y "udp"`. Check for packets directed at the RoboRIO address (typically 10.21.58.2) or of length 6. If you see a bunch of TCP discovery requests, the device can't find the RoboRIO but has a "correct" network configuration. If you don't see anything relevant, either the network is set up incorrectly or the packets aren't being sent for some reason.
 * If the service doesn't run, try changing the "User" and "Group" in the service file to the same as the owner/user of the python script. If set up correctly, they should both be "root". If not, run `ls -la /home/frcuser/Headless-DS/headless-ds.py`. The two names on the left should be the same as those in the service, editable by running `nano /lib/systemd/system/headless-ds.service`. Reload the systemctl configuration and restart the service to save the changes.
 * If everything looks fine but no packets are being sent, `libnss-mdns` may not have been installed. To install it without having the pi connected to the internet, download it, scp it onto the pi, and use dpkg to install it. For other packages, the architecture is `armhf`, and Armbian is Debian-based, so any Debian packages built for armhf should work.
