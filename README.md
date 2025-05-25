@@ -14,7 +14,7 @@ Enables Headless Driver Station on FRC robots with ethernet connection.
 8. SSH into NanoPi (default user = root, pw = dietpi) or use the serial monitor (USB)
 9. Set up new user as "frcuser" with pw "admin"
 10. `sudo adduser frcuser`
-11. SSH into the NanoPi again (default user = root, pw = dietpi)
+11. SSH into the NanoPi again (default user = root, pw = dietpi). To enable SSH Client on Windows 11, please read this [Microsoft article](https://learn.microsoft.com/en-us/windows/terminal/tutorials/ssh)
 12. Set the new unix password to the default pw and continue installer until config screen comes up.
 13. Search for "pip" and "git client" packages and install those
 14. Change the default SSH client to OpenSSH
