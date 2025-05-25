@@ -1,6 +1,6 @@
 # Headless Driver Station
 Enables Headless Driver Station on FRC robots with ethernet connection. Design on a NanoPi NEO
-[NanoPi NEO](NanoPi_NEO.jpg)
+![NanoPi NEO](NanoPi_NEO.jpg)
 (as of May 25, Intructions status is "in progress")
 
 ##  Installation
