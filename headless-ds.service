@@ -1,0 +1,14 @@
+[Unit]
+Description=FRC Headless DriverStation Program
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/python3 /home/frcuser/headless-ds/headless-ds.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

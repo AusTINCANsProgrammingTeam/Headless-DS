@@ -1,0 +1,11 @@
+# filename /DietPi/dietpi/func/dietpi-banner
+
+clear
+echo -e ICAgICAgICAgICAgICAgIF9fX19fIF9fXyBfICAgXyAgICBfX19fICAgIF8gICAgXyAgIF8gICAgIAogIF9fIF8gXyAgIF8gX198XyAgIF98XyBffCBcIHwgfCAgLyBfX198ICAvIFwgIHwgXCB8IHxfX18gCiAvIF9gIHwgfCB8IC8gX198fCB8ICB8IHx8ICBcfCB8IHwgfCAgICAgLyBfIFwgfCAgXHwgLyBfX3wKfCAoX3wgfCB8X3wgXF9fIFx8IHwgIHwgfHwgfFwgIHwgfCB8X19fIC8gX19fIFx8IHxcICBcX18gXAogXF9fLF98XF9fLF98X19fL3xffCB8X19ffF98IFxffCAgXF9fX18vXy8gICBcX1xffCBcX3xfX18vCg== | base64 -d
+echo -n -e "FRC Team $(team) | $(date "+%-m/%-d/%-y %l:%M:%S %p") | IP: $(ifconfig eth0 | grep -w 'inet' | tr -s ' ' | cut -d ' ' -f3) | "
+if systemctl status headless-ds.service | grep -q 'active (running)'; then
+	echo -n -e '\033[0;32mService running\033[0;0m\n';
+else
+	echo -n -e '\033[0;31mService stopped\033[0;0m\n';
+fi
+printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' '_'
