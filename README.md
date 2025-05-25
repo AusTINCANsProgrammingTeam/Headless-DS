@@ -33,7 +33,7 @@ Enables FRC robots on ethernet connection.
   * `DNSSDEnable on`
 27. Set the hostname to "headless-ds" by executing `sudo nano /etc/hostname` and changing the contents of the file to "headless-ds" (without the quotes).
 28. Run `apt-get update` and `apt-get upgrade`
-29. Ensure that the current directory is `/home/frcuser/` (if not change it to that using `cd /home/frcuser/`). Clone the headless-ds Git repository using `git clone https://github.com/AusTINCANsProgrammingTeam/headless-ds.git`.
+29. Ensure that the current directory is `/home/frcuser/` (if not change it to that using `cd /home/frcuser/`). Clone the headless-ds Git repository using `git clone https://github.com/AusTINCANsProgrammingTeam/Headless-DS.git`.
 30. Remove existing files and create symlinks in their place. Run `rm <dest>` then `sudo ln -s <src> <dest>` for each of the following pairs of `<src>` `<dest>`:
 
   | Source `<src>` | Destination `<dest>` | Description |
