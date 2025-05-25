@@ -1,4 +1,4 @@
-# Headless Driver Station
+# [ausTIN CANs](CanMan_Left.png) Headless Driver Station
 Enables Headless Driver Station on FRC robots with ethernet connection. Design on a NanoPi NEO
 ![NanoPi NEO](NanoPi_NEO.jpg)
 
