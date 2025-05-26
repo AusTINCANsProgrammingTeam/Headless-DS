@@ -1,4 +1,11 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+""" Headless Driving Station
+   Enables Headless Driver Station on FRC robots with 
+   ethernet connection
+"""
+
 import netifaces
 
 def main():

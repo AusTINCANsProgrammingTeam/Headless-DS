@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+""" Headless Driving Station
+   Enables Headless Driver Station on FRC robots with 
+   ethernet connection
+"""
+
 import datetime
 import itertools
 import netifaces
