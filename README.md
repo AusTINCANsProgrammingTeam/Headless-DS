@@ -2,7 +2,6 @@
 Enables Headless Driver Station on FRC robots with ethernet connection. Design on a NanoPi NEO
 ![NanoPi NEO](NanoPi_NEO.jpg)
 
-# 
 ## (as of May 25, Intructions status is "in progress")
 
 ##  Installation
@@ -133,3 +132,6 @@ Where ens18 is the network interface.
 5. Remove the SD card and insert another SD card, the one you want to copy to.
 6. Run the command in reverse, swapping `if` and `of`, but making sure your partitions are not mounted.
   * To unmount a partition, run `umount /dev/mmcblk0pX` as root
+
+## Printing the Enclosure
+Under the `NanoPi NEO Case` directory, you will find the two STLs for printing the enclosure for this project. This case is for a NanoPi Neo with heatsink. Slice and Print using your favorite printer. CCurrently printed with ASA material and finess resolution.
