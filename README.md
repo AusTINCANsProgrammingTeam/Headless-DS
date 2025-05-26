@@ -3,7 +3,9 @@ Enables Headless Driver Station on FRC robots with ethernet connection. Design o
 ![NanoPi NEO](NanoPi_NEO.jpg)
 
 ## (as of May 26, Intructions status is "in progress". Your own risk!)
-
+## Hardware
+1. NanoPi NEO on [Amazon](https://a.co/d/0pg3vde)
+2. NanoPi NEO Heatsink on [Amazon](https://a.co/d/1PfPvCM)
 ##  Installation
 ### Instructions
 1. Download [DietPI Debian Stretch](https://dietpi.com/downloads/images/DietPi_NanoPiNEO-ARMv7-Bookworm.img.xz)
