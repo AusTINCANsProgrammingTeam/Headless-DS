@@ -1,11 +1,11 @@
 # ![ausTIN CANs](CanMan_Left.png) Headless Driver Station
 Enables Headless Driver Station on FRC robots with ethernet connection. Design on a NanoPi NEO
 ![NanoPi NEO](NanoPi_NEO.jpg)
-
-## (as of May 26, Intructions status is "in progress". Your own risk!)
 ## Hardware
 1. NanoPi NEO on [Amazon](https://a.co/d/0pg3vde)
 2. NanoPi NEO Heatsink on [Amazon](https://a.co/d/1PfPvCM)
+3. 4 x M3 x 22mm Hex Socket Head Cap Screws Bolts on [Amazon](https://a.co/d/ap4z5O9)
+4. 4 x M3 x 3 x 5mm Female Press in Thread Brass Heat Set Inserts Embedment Nuts on [Amazon](https://a.co/d/3AStFNL)
 ##  Installation
 ### Instructions
 1. Download [DietPI Debian Stretch](https://dietpi.com/downloads/images/DietPi_NanoPiNEO-ARMv7-Bookworm.img.xz)
@@ -17,28 +17,29 @@ Enables Headless Driver Station on FRC robots with ethernet connection. Design o
 7. Connect NanoPi to ethernet and put in SD card and connect power supply.
 8. SSH into NanoPi (default user = root, pw = dietpi) or use the serial monitor (USB) `ssh root@<dhcp-ip-address>`
 9. Set up new user as "frcuser" with pw "admin"
-10. `sudo adduser frcuser`
+10. `sudo adduser frcuser`	
 11. SSH into the NanoPi again (default user = root, pw = dietpi). To enable SSH Client on Windows 11, please read this [Microsoft article](https://learn.microsoft.com/en-us/windows/terminal/tutorials/ssh)
 12. Set the new unix password to the default pw and continue installer until config screen comes up.
 13. Search for "pip" and "git client" packages and install those
-14. Change the default SSH client to OpenSSH
-15. Proceed by selecting "Install" and selecting "Opt Out" when prompted for the survey. Wifi is not needed, nor is the serial port.
+14. Proceed by selecting "Install" and selecting "Opt Out" when prompted for the survey. Wifi is not needed, nor is the serial port.
+15. Change the default SSH client to OpenSSH using dietpi-software
 16. SSH back into the system after reboot and run `dietpi-config`
-17. Scroll to "advanced options" then "Swapfile". Press "OK" when prompted.
+17. Scroll to "advanced options" then "Swapfile". Press "OK" when prompted to run DietPi-Drive_Manager.
 18. Select `/dev/mmcblk0p1` or equivalent and enter "0" for the swapfile value
 19. Go back out to "Network Options: Misc" and press "Boot Net Wait". Select "0: Disabled" and press OK
 20. Back out again and select "Network Options: Adapters" and turn off the WiFi adapter option.
 21. Change the "dietpi" user to "frcuser" by running `usermod -l frcuser -d /home/frcuser -m dietpi`
-22. Exit all the way out of the config and run `apt-get install avahi-daemon net-tools libnss-mdns info install-info tshark apache2 php policykit-1 libapache2-mod-dnssd`. This will install the avahi hostname daemon, ifconfig, mdns resolver, http server, and packet analyzer.
+22. Exit all the way out of the config and run `apt-get install avahi-daemon net-tools libnss-mdns info install-info tshark apache2 python3 sshd-server php policykit-1 libapache2-mod-dnssd`. This will install the avahi hostname daemon, ifconfig, mdns resolver, http server, and packet analyzer.
 23. Enable the http server on startup by running `systemctl enable apache2.service`
 24. Enable the avahi mdns resolver by executing `systemctl enable avahi-daemon.service`
 25. Give root permissions to "www-data" so the http server can execute systemctl commands: `sudo visudo` or `sudo nano /etc/sudoers` and add this to the bottom: `www-data ALL = NOPASSWD: /bin/systemctl`
-26. Edit the apache2 config file through nano using `nano /etc/apache2/apache2.conf` and add these two lines:
+26. Edit the apache2 configs file for dnssd through nano using `nano /etc/apache2/mods-enabled/dnssd.load` and add this line:
   * `LoadModule dnssd_module /usr/lib/apache2/modules/mod_dnssd.so`
+Edit the apache2 config file through nano using `nano /etc/apache2/mods-enabled/dnssd.conf` and add this line:
   * `DNSSDEnable on`
-27. Set the hostname to "headless-ds" by executing `sudo nano /etc/hostname` and changing the contents of the file to "headless-ds" (without the quotes).
+27. Set the hostname to "headless-ds" by executing `sudo dietpi-config` then selecting Security and Hostname. Change the contents to "headless-ds" (without the quotes), then exit.
 28. Run `apt-get update` and `apt-get upgrade`
-29. Ensure that the current directory is `/home/frcuser/` (if not change it to that using `cd /home/frcuser/`). Clone the headless-ds Git repository using `git clone https://github.com/AusTINCANsProgrammingTeam/Headless-DS.git`.
+29. Ensure that the current directory is `/home/frcuser/` by issuing the command `su - frcuser` followed by `pwd` (if not change it to that using `cd /home/frcuser/` as user frcuser). Clone the headless-ds Git repository using `git clone https://github.com/AusTINCANsProgrammingTeam/Headless-DS.git`.
 30. Remove existing files and create symlinks in their place. Run `sudo rm <dest>` then `sudo ln -s <src> <dest>` for each of the following pairs of `<src>` `<dest>`:
 
   | Source `<src>` | Destination `<dest>` | Description |
@@ -47,8 +48,9 @@ Enables Headless Driver Station on FRC robots with ethernet connection. Design o
   |`/home/frcuser/Headless-DS/team.py` | `/usr/bin/team` | team number utility |
   |`/home/frcuser/Headless-DS/index.php` | `/var/www/html/index.php` | web config page |
   |`/home/frcuser/Headless-DS/CanMan_Left.png` | `/var/www/html/CanMan_Left.png` | FRC: 2158 the ausTIN CANs logo via web config |
-  |`/home/frcuser/Headless-DS/dietpi-banner` | `/DietPi/dietpi/func/dietpi-banner` | ssh login banner |
+  |`/home/frcuser/Headless-DS/dietpi-banner` | `/boot/dietpi/.dietpi-banner_custom` | ssh login banner |
   |`/sbin/ifconfig` | `/usr/bin/ifconfig` | ifconfig through frcuser |
+The following files need to be executable: /usr/bin/team and .dietpi-banner_custom
 31. Ensure that the Apache web server can access the symlinked files by changing the owner to `www-data`. Execute the following:
   * `sudo chown -R www-data /home/frcuser/Headless-DS/`
   * `sudo chmod -R g+s /home/frcuser/Headless-DS/`
@@ -60,56 +62,6 @@ The included `install.sh` script will perform steps 22-33 if placed in the corre
 
 ## Updates
 The "Update Device" button on the web dashboard will update the headless-ds with any new software published. The latest version will automatically be downloaded and applied. This requires an internet connection.
-
-## Steps to configure static IP address on Debian 9.0
-The configuration file is located in /etc/network/interfaces file. We need to modify this file to change the IP address settings.
-
-`nano /etc/network/interfaces`
-
-The following lines are the default content of the file which is using DHCP. This file describes the network interfaces available on your system, and how to activate them. For more information, see interfaces(5).
-
-`source /etc/network/interfaces.d/*`
-
-```
-## The loopback network interface
-auto lo
-iface lo inet loopback
-
-## The primary network interface
-allow-hotplug ens18
-iface ens18 inet dhcp
-```
-
-To change it to Static IP, made some changes into these
-
-This file describes the network interfaces available on your system and how to activate them. For more information, see interfaces(5).
-
-`source /etc/network/interfaces.d/*`
-
-```
-## The loopback network interface
-auto lo
-iface lo inet loopback
-
-## The primary network interface
-allow-hotplug ens18'
-#iface ens18 inet dhcp'
-iface ens18 inet static
-address 10.21.58.30
-network 10.0.0.0
-netmask 255.0.0.0
-broadcast 10.21.0.255
-gateway 10.21.58.1
-dns-nameservers 10.21.58.1'
-```
-
-As you can see, my new IP address is 10.21.58.30. You can modify this to match your needs.
-
-Next, restart the networking
-
-`ifdown ens18 && ifup ens18`
-
-Where ens18 is the network interface.
 
 ## Troubleshooting
 * Use the web interface at `http://headless-ds.local`
@@ -136,4 +88,4 @@ Where ens18 is the network interface.
   * To unmount a partition, run `umount /dev/mmcblk0pX` as root
 
 ## Printing the Enclosure
-Under the [NanoPi NEO Case directory](NanoPi%20NEO%20Case), you will find the two STLs for printing the enclosure for this project. This case is for a NanoPi Neo with heatsink. Slice and Print using your favorite printer. Currently printed with ASA material and finess resolution.
+Under the [NanoPi NEO Case directory](NanoPi%20NEO%20Case), you will find the two STLs for printing the enclosure for this project. This case is for a NanoPi Neo with heatsink. Slice and Print using your favorite printer. Currently printed with ASA material and finest resolution.
