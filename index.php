@@ -7,7 +7,7 @@ echo '<link rel=icon href=CanMan_Left.png>';
 
 $svc_name = "headless-ds";
 exec("cd /home/frcuser/Headless-DS/ && git describe --tags --abbrev=0", $ver);
-echo '<b><pre>Headless DriverStation Web Interface | Version ' . $ver[0] . ' | FRC Team ' . exec(team) . '</pre></b>';
+echo '<b><pre>Headless DriverStation Web Interface | Version ' . $ver[0] . ' | FRC Team ' . exec('/usr/bin/team') . '</pre></b>';
 
 exec('df /dev/mmcblk0p1 -H', $output);
 array_push($output, "");
